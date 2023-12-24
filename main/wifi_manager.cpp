@@ -1,14 +1,10 @@
-// ESP8266MOD D1 mini data source:
-// https://cdn.shopify.com/s/files/1/1509/1638/files/D1_Mini_Datenblatt.pdf?5384137068277415753
-// https://cdn.shopify.com/s/files/1/1509/1638/files/D1_Mini_Pinout_Diagram.pdf?5603303439559815202
 
-#include <WiFiManager.h>  // https://github.com/tzapu/WiFiManager
-#include "DHTesp.h"
+
+#include <WiFiManager.h> // https://github.com/tzapu/WiFiManager
 #include <ESP8266WebServer.h>
 #include "credentials.h"
 
-#define ESP8266 true
-#define DHT_PIN 14  // GPIO14 | D5 | IO,SCK
+
 
 WiFiManager wm;
 ESP8266WebServer webServer(80);
@@ -17,19 +13,20 @@ DHTesp dht;
 float temperature;
 float humidity;
 
-void setup() {
+void setup()
+{
   /*
-  * Setup ESP8266
-  */
+   * Setup ESP8266
+   */
   Serial.begin(115200);
 
   /*
-  * Setup WifiManager
-  */
+   * Setup WifiManager
+   */
   // WiFi.mode(WIFI_STA); // explicitly set mode, esp defaults to STA+AP
   // it is a good practice to make sure your code sets wifi mode how you want it.
-  wm.setClass("invert");     // dark theme
-  wm.setScanDispPerc(true);  // display percentages instead of graphs for RSSI
+  wm.setClass("invert");    // dark theme
+  wm.setScanDispPerc(true); // display percentages instead of graphs for RSSI
   // Do not log passwords..
   wm.setShowPassword(false);
   // reset settings - wipe stored credentials for testing
@@ -56,55 +53,64 @@ void setup() {
   // if connection fails, it starts an access point with the specified name ( "AutoConnectAP"),
   // if empty will auto generate SSID, if password is blank it will be anonymous AP (wm.autoConnect())
   // then goes into a blocking loop awaiting configuration and will return success result
-  if (!wm.autoConnect(ssid, password)) {
+  if (!wm.autoConnect(ssid, password))
+  {
     Serial.println("Failed to connect to AP!");
     Serial.println("Restarting ESP...");
     ESP.restart();
-  } else {
+  }
+  else
+  {
     Serial.println("Connected to AP '" + WiFi.SSID() + "'!");
   }
 
   /*
-  * Setup DHT22 (AM2302)
-  */
+   * Setup DHT22 (AM2302)
+   */
   dht.setup(D5, DHTesp::DHT22);
 
   /*
-  * Setup WebServer
-  */
+   * Setup WebServer
+   */
   webServer.on("/", handle_OnConnect);
   webServer.onNotFound(handle_NotFound);
   webServer.begin();
   Serial.println("HTTP server started");
 }
 
-void loop() {
-  if (WiFi.status() != WL_CONNECTED) {
+void loop()
+{
+  if (WiFi.status() != WL_CONNECTED)
+  {
     digitalWrite(LED_BUILTIN, HIGH);
     delay(50);
     digitalWrite(LED_BUILTIN, LOW);
     delay(50);
   }
-  if (WiFi.status() == WL_CONNECTED) {
+  if (WiFi.status() == WL_CONNECTED)
+  {
     digitalWrite(LED_BUILTIN, HIGH);
   }
 
-  //webServer.handleClient();
+  // webServer.handleClient();
 
   readAndPrintTemperatureAndHumidity();
 }
 
-void handle_OnConnect() {
-  temperature = dht.getTemperature();  //dht.readTemperature();
-  humidity = dht.getHumidity();        //dht.readHumidity();
+void handle_OnConnect()
+{
+  temperature = dht.getTemperature(); // dht.readTemperature();
+  humidity = dht.getHumidity();       // dht.readHumidity();
   webServer.send(200, "text/html", buildHtml(temperature, humidity));
 }
 
-void handle_NotFound() {
+void handle_NotFound()
+{
   webServer.send(404, "text/plain", "Not found");
 }
 
-String buildHtml(float _temperature, float _humidity) {
+String buildHtml(float _temperature, float _humidity)
+{
   String page = "<!DOCTYPE html> <html>\n";
   page += "<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\"/>\n";
   page += "<meta charset=\"UTF-8\"/>";
@@ -136,19 +142,21 @@ String buildHtml(float _temperature, float _humidity) {
 // https://blog.rolandbaer.ch/tag/wemos-d1-mini/
 // https://blog.rolandbaer.ch/2020/03/07/temperatur-und-luftfeuchtigkeit-messen-mit-dem-arduino-nano/
 
-
 // https://chewett.co.uk/blog/1405/using-the-dht11-temperature-sensor-with-a-wemos-d1-mini-esp8266/
-void readAndPrintTemperatureAndHumidity() {
+void readAndPrintTemperatureAndHumidity()
+{
   // Wait two seconds between measurements as the sensor will not measure faster
   delay(dht.getMinimumSamplingPeriod());
 
   float h = dht.getHumidity();
   float t = dht.getTemperature();
 
-  if (isnan(h)) {
+  if (isnan(h))
+  {
     Serial.println("Error reading humidity!");
   }
-  if (isnan(t)) {
+  if (isnan(t))
+  {
     Serial.println("Error reading temperature!");
   }
 
