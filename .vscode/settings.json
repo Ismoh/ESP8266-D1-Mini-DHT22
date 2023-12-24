@@ -2,5 +2,13 @@
     "cSpell.words": [
         "GPIO",
         "ifndef"
+    ],
+    "arduino.enableUSBDetection": true,
+    "arduino.logLevel": "verbose",
+    "arduino.useArduinoCli": true,
+    "arduino.commandPath": "",
+    "arduino.path": "C:\\Program Files\\Arduino-CLI",
+    "arduino.additionalUrls": [
+        "http://arduino.esp8266.com/stable/package_esp8266com_index.json"
     ]
 }
