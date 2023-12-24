@@ -1,7 +1,10 @@
 {
     "cSpell.words": [
+        "Espressif",
         "GPIO",
-        "ifndef"
+        "ifndef",
+        "Perc",
+        "Wemos"
     ],
     "arduino.enableUSBDetection": true,
     "arduino.logLevel": "verbose",
