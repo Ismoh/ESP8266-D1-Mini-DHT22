@@ -38,14 +38,19 @@ void Am2302::print(float h, float t) const
     Serial.print(dhtEsp.getStatusString());
     Serial.print("\t");
     Serial.print(h, 1);
+    Serial.print(" %");
     Serial.print("\t\t");
     Serial.print(t, 1);
-    Serial.print("\t\t");
+    Serial.print(" ˚C");
+    Serial.print("\t");
     Serial.print(dhtEsp.toFahrenheit(t), 1);
-    Serial.print("\t\t");
+    Serial.print(" F");
+    Serial.print("\t");
     Serial.print(dhtEsp.computeHeatIndex(t, h, false), 1);
-    Serial.print("\t\t");
-    Serial.println(dhtEsp.computeHeatIndex(dhtEsp.toFahrenheit(t), h, true), 1);
+    Serial.print(" H I C");
+    Serial.print("\t");
+    Serial.print(dhtEsp.computeHeatIndex(dhtEsp.toFahrenheit(t), h, true), 1);
+    Serial.println(" H I F");
 }
 
 int Am2302::sendToHA(float h, float t)
