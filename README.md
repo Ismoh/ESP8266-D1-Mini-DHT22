@@ -13,22 +13,7 @@ Datasheet can be found [here](https://cdn.shopify.com/s/files/1/1509/1638/files/
 
 ## Setup
 
-Add a `credentials.h` like so
-
-```C++
-#ifndef credentials_H
-#define credentials_H
-
-const char *ssid = "ssid-name";
-const char *password = "better-choose-a-good-password";
-const IPAddress ap_ip(192, 168, 4, 1);
-const IPAddress ap_gateway(192, 168, 4, 1);
-const IPAddress ap_subnet(255, 255, 255, 0);
-
-#endif
-```
-
-to **do not store credentials in git**.
+Copy and paste `credentials.h-SAMPLE` to `credentials.h` and fill in your credentials appropriately, but double check to **do not store credentials in git**.
 
 ### Circuit diagram
 

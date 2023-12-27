@@ -1,6 +1,4 @@
 #include "customWifiManager.h"
-#include <WiFiManager.h>
-#include "credentials.h"
 
 WiFiManager wm;
 
@@ -26,7 +24,7 @@ void CustomWifiManager::setup()
     free(buf);
 
     // Set custom ip for portal
-    wm.setAPStaticIPConfig(ap_ip, ap_gateway, ap_subnet);
+    wm.setAPStaticIPConfig(IPAddress(SECRET_AP_IP), IPAddress(SECRET_AP_GATEWAY), IPAddress(SECRET_AP_SUBNET));
     // Disable debug output
     wm.setDebugOutput(false);
     // Make AP not available for ever (10min)
@@ -36,7 +34,7 @@ void CustomWifiManager::setup()
     // if connection fails, it starts an access point with the specified name ( "AutoConnectAP"),
     // if empty will auto generate SSID, if password is blank it will be anonymous AP (wm.autoConnect())
     // then goes into a blocking loop awaiting configuration and will return success result
-    if (!wm.autoConnect(ssid, password))
+    if (!wm.autoConnect(SECRET_SSID, SECRET_PASSWORD))
     {
         Serial.println("Failed to connect to AP!");
         Serial.println("Restarting ESP...");
@@ -61,4 +59,6 @@ void CustomWifiManager::loop()
     {
         digitalWrite(LED_BUILTIN, HIGH);
     }
+    Serial.println("Hostname set to:");
+    Serial.println(WiFi.getHostname());
 }

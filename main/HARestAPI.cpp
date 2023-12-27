@@ -1,3 +1,5 @@
+// https://github.com/debsahu/HARestAPI
+
 #include "HARestAPI.h"
 
 /* Ask user to supply appropiate Client 
@@ -91,7 +93,7 @@ String HARestAPI::sendGetHA(String URL)
 
   if (_ssl)
   {
-    posturl = "https://" + _serverip + ":" + _port + URL;
+    posturl = "https://" + _serverip + ":" + String(_port) + URL;
     if (_debug)
     {
       Serial.print("Connecting: ");
@@ -101,7 +103,7 @@ String HARestAPI::sendGetHA(String URL)
     {
       #ifdef ESP8266
       wsclient->setFingerprint(_fingerprint.c_str());
-      #elseif defined(ESP32)
+      #else defined(ESP32)
       if (wsclient->verify(_fingerprint.c_str(), _serverip.c_str()))
       {
         Serial.println("certificate matches");
@@ -146,7 +148,7 @@ String HARestAPI::sendGetHA(String URL)
   }
   else
   {
-    posturl = "http://" + _serverip + ":" + _port + URL;
+    posturl = "http://" + _serverip + ":" + String(_port) + URL;
     if (_debug)
     {
       Serial.print("Connecting: ");
@@ -196,7 +198,7 @@ bool HARestAPI::sendPostHA(String URL, String message)
 
   if (_ssl)
   {
-    posturl = "https://" + _serverip + ":" + _port + URL;
+    posturl = "https://" + _serverip + ":" + String(_port) + URL;
     if (_debug)
     {
       Serial.print("Connecting: ");
@@ -206,7 +208,7 @@ bool HARestAPI::sendPostHA(String URL, String message)
     {
       #ifdef ESP8266
       wsclient->setFingerprint(_fingerprint.c_str());
-      #elseif defined(ESP32)
+      #else defined(ESP32)
       if (wsclient->verify(_fingerprint.c_str(), _serverip.c_str()))
       {
         Serial.println("certificate matches");
@@ -253,7 +255,7 @@ bool HARestAPI::sendPostHA(String URL, String message)
   }
   else
   {
-    posturl = "http://" + _serverip + ":" + _port + URL;
+    posturl = "http://" + _serverip + ":" + String(_port) + URL;
     if (_debug)
     {
       Serial.print("Connecting: ");
