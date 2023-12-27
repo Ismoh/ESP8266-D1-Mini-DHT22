@@ -1,16 +1,22 @@
 #include "am2302.h"
 
-#define ESP8266 true // Espressif Wemos D1 R2 & mini
-#define DHT_PIN 14   // GPIO14 | D5 | IO,SCK
-
 DHTesp dhtEsp;
+WiFiClient client;
+HARestAPI ha(client);
 
 void Am2302::setup(uint8_t pin)
 {
     dhtEsp.setup(pin, DHTesp::AM2302);
+
+    ha.setHAServer(SECRET_HA_DNS, SECRET_HA_PORT);
+    ha.setHAPassword(SECRET_HA_TOKEN);
+
+    // Optional, but can use SHA1 fingerprint to confirm one is connecting to
+    String fingerprint = "35 85 74 EF 67 35 A7 CE 40 69 50 F3 C0 F6 80 CF 80 3B 2E 19";
+    ha.setFingerPrint(fingerprint);
 }
 
-void Am2302::loop()
+void Am2302::loop(String deviceName, unsigned measurementDelay)
 {
     delay(dhtEsp.getMinimumSamplingPeriod());
 
@@ -27,10 +33,14 @@ void Am2302::loop()
     }
     else
     {
-        print(h, t);
+        if (Serial)
+        {
+            print(h, t);
+        }
+        sendToHA(deviceName, h, t);
     }
 
-    // delay(2000);
+    delay(measurementDelay);
 }
 
 void Am2302::print(float h, float t) const
@@ -53,8 +63,13 @@ void Am2302::print(float h, float t) const
     Serial.println(" H I F");
 }
 
-int Am2302::sendToHA(float h, float t)
+int Am2302::sendToHA(String deviceName, float h, float t)
 {
-    // Not yet implemented.
+    deviceName.replace("-", "_");
+    // https://funprojects.blog/2020/12/12/home-assistant-rest-api/
+    String json = "{\"state\": \"" + String(h, 2) + "\", \"attributes\": { \"unit_of_measurement\": \"%\", \"friendly_name\": \"" + deviceName.c_str() + "\" }}";
+    ha.sendCustomHAData("/api/states/sensor." + deviceName + "_humidity", json);
+    json = "{\"state\": \"" + String(t, 2) + "\", \"attributes\": { \"unit_of_measurement\": \"C\", \"friendly_name\": \"" + deviceName.c_str() + "\" }}";
+    ha.sendCustomHAData("/api/states/sensor." + deviceName + "_temperature", json);
     return 0;
 }
