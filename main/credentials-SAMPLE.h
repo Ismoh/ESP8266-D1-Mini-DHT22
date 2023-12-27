@@ -3,6 +3,10 @@
 #ifndef CREDENTIALS_H
 #define CREDENTIALS_H
 
+#ifndef SECRET_DEVICE_NAME
+#define SECRET_DEVICE_NAME "esp8266-thcs-1"
+#endif
+
 #ifndef SECRET_SSID
 #define SECRET_SSID "WifiSSID"
 #endif
@@ -24,7 +28,7 @@
 #endif
 
 #ifndef SECRET_HA_DNS
-#define SECRET_HA_DNS "192.168.4.2"
+#define SECRET_HA_DNS "http://homeassistant.local"
 #endif
 
 #ifndef SECRET_HA_PORT
