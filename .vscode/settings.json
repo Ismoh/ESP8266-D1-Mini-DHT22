@@ -5,8 +5,11 @@
         "Espressif",
         "GPIO",
         "ifndef",
+        "MDNS",
         "Perc",
+        "rssi",
         "Tesp",
+        "thcs",
         "Wemos"
     ],
     "arduino.enableUSBDetection": true,

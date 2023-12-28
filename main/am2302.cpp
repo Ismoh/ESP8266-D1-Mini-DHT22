@@ -1,4 +1,5 @@
 #include "am2302.h"
+#include "ESP8266WiFi.h"
 
 DHTesp dhtEsp;
 WiFiClient client;
@@ -71,5 +72,7 @@ int Am2302::sendToHA(String deviceName, float h, float t)
     ha.sendCustomHAData("/api/states/sensor." + deviceName + "_humidity", json);
     json = "{\"state\": \"" + String(t, 2) + "\", \"attributes\": { \"unit_of_measurement\": \"C\", \"friendly_name\": \"" + deviceName.c_str() + "\" }}";
     ha.sendCustomHAData("/api/states/sensor." + deviceName + "_temperature", json);
+    json = "{\"state\": \"" + String(WiFi.RSSI()) + "\", \"attributes\": { \"unit_of_measurement\": \"dBm\", \"friendly_name\": \"" + deviceName.c_str() + "\" }}";
+    ha.sendCustomHAData("/api/states/sensor." + deviceName + "_wifi_rssi", json);
     return 0;
 }

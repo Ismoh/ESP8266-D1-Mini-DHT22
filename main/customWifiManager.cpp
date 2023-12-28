@@ -2,7 +2,7 @@
 
 WiFiManager wm;
 
-void CustomWifiManager::setup()
+void CustomWifiManager::setup(String deviceName)
 {
     // WiFi.mode(WIFI_STA); // explicitly set mode, esp defaults to STA+AP
     // it is a good practice to make sure your code sets wifi mode how you want it.
@@ -14,14 +14,15 @@ void CustomWifiManager::setup()
     // these are stored by the esp library
     // wm.resetSettings();
 
-    const char *hostname = WiFi.getHostname();
-    const char *extra_text = "THCSensor-";
-    char *buf = (char *)malloc(strlen(hostname) + strlen(extra_text) + 1);
-    buf[0] = 0;
-    strcat(buf, extra_text);
-    strcat(buf, hostname);
-    WiFi.setHostname(buf);
-    free(buf);
+    // const char *hostname = WiFi.getHostname();
+    // const char *extra_text = deviceName.c_str();
+    // char *buf = (char *)malloc(strlen(extra_text) + strlen(hostname) + 1);
+    // buf[0] = 0;
+    // strcat(buf, extra_text);
+    // strcat(buf, hostname);
+    // WiFi.setHostname(buf);
+    // free(buf);
+    WiFi.setHostname(deviceName.c_str());
 
     // Set custom ip for portal
     wm.setAPStaticIPConfig(IPAddress(SECRET_AP_IP), IPAddress(SECRET_AP_GATEWAY), IPAddress(SECRET_AP_SUBNET));
@@ -59,6 +60,4 @@ void CustomWifiManager::loop()
     {
         digitalWrite(LED_BUILTIN, HIGH);
     }
-    Serial.println("Hostname set to:");
-    Serial.println(WiFi.getHostname());
 }

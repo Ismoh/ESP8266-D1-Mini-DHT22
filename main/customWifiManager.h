@@ -11,7 +11,8 @@ class CustomWifiManager
 {
 public:
     /// @brief Set up WifiManager.
-    void setup();
+    /// @param deviceName mDNS and HomeAssistant device name.
+    void setup(String deviceName);
 
     /// @brief Loop until ESP died.
     void loop();
