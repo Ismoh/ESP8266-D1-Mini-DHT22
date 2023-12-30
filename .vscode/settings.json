@@ -1,7 +1,9 @@
 {
     "cSpell.words": [
+        "CUSTOMWEBSERVER",
         "CUSTOMWIFIMANAGER",
         "Datasheet",
+        "ELEGANTOTA",
         "Espressif",
         "GPIO",
         "ifndef",
@@ -10,6 +12,7 @@
         "rssi",
         "Tesp",
         "thcs",
+        "WEBSERVER",
         "Wemos"
     ],
     "arduino.enableUSBDetection": true,

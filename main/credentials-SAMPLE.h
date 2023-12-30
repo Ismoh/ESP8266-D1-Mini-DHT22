@@ -39,4 +39,16 @@
 #define SECRET_HA_TOKEN "JWT-TOKEN"
 #endif
 
+#ifndef SECRET_WEB_SERVER_PORT
+#define SECRET_WEB_SERVER_PORT 80
+#endif
+
+#ifndef SECRET_OTA_USER
+#define SECRET_OTA_USER "OtaUser"
+#endif
+
+#ifndef SECRET_OTA_PASSWORD
+#define SECRET_OTA_PASSWORD "OtaPassword"
+#endif
+
 #endif

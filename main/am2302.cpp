@@ -1,6 +1,10 @@
 #include "am2302.h"
 #include "ESP8266WiFi.h"
 
+#ifndef DEBUG_AM2302
+#define DEBUG_AM2302 1
+#endif
+
 DHTesp dhtEsp;
 WiFiClient client;
 HARestAPI ha(client);
@@ -9,6 +13,9 @@ void Am2302::setup(uint8_t pin)
 {
     dhtEsp.setup(pin, DHTesp::AM2302);
 
+#if DEBUG_AM2302
+    ha.setDebugMode(false);
+#endif
     ha.setHAServer(SECRET_HA_DNS, SECRET_HA_PORT);
     ha.setHAPassword(SECRET_HA_TOKEN);
 
@@ -46,6 +53,9 @@ void Am2302::loop(String deviceName, unsigned measurementDelay)
 
 void Am2302::print(float h, float t) const
 {
+#if DEBUG_AM2302
+    return;
+#endif
     Serial.print(dhtEsp.getStatusString());
     Serial.print("\t");
     Serial.print(h, 1);
