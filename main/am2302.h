@@ -18,7 +18,7 @@ public:
     /// @brief Loop until esp died.
     /// @param deviceName Name of your device listed in HomeAssistant.
     /// @param measurementDelay Delay between measurements, i.e. 5000ms for measuring each 5s.
-    void loop(String deviceName, unsigned measurementDelay);
+    void loop(String deviceName, unsigned long measurementDelay);
 
     /// @brief Prints humidity and temperature on `Serial`.
     /// @param h humidity

@@ -8,7 +8,7 @@
 DHTesp dhtEsp;
 WiFiClient client;
 HARestAPI ha(client);
-long timer = 0;
+unsigned long previousMillis = 0;
 
 void Am2302::setup(uint8_t pin)
 {
@@ -25,35 +25,34 @@ void Am2302::setup(uint8_t pin)
     ha.setFingerPrint(fingerprint);
 }
 
-void Am2302::loop(String deviceName, unsigned measurementDelay)
+void Am2302::loop(String deviceName, unsigned long measurementDelay)
 {
+    unsigned long currentMillis = millis();
     // Wait async until measurement duration is reached
-    if (millis() < measurementDelay + timer)
+    if (currentMillis - previousMillis >= measurementDelay)
     {
-        timer = millis();
-        return;
-    }
+        previousMillis = currentMillis;
+        delay(dhtEsp.getMinimumSamplingPeriod());
 
-    delay(dhtEsp.getMinimumSamplingPeriod());
+        float h = dhtEsp.getHumidity();
+        float t = dhtEsp.getTemperature();
 
-    float h = dhtEsp.getHumidity();
-    float t = dhtEsp.getTemperature();
-
-    if (isnan(h))
-    {
-        Serial.println("Error reading humidity!");
-    }
-    else if (isnan(t))
-    {
-        Serial.println("Error reading temperature!");
-    }
-    else
-    {
-        if (Serial)
+        if (isnan(h))
         {
-            print(h, t);
+            Serial.println("Error reading humidity!");
         }
-        sendToHA(deviceName, h, t);
+        else if (isnan(t))
+        {
+            Serial.println("Error reading temperature!");
+        }
+        else
+        {
+            if (Serial)
+            {
+                print(h, t);
+            }
+            sendToHA(deviceName, h, t);
+        }
     }
 }
 
