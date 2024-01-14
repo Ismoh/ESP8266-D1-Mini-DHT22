@@ -28,7 +28,7 @@ void Am2302::setup(uint8_t pin)
 void Am2302::loop(String deviceName, unsigned measurementDelay)
 {
     // Wait async until measurement duration is reached
-    if (millis() >= measurementDelay + timer)
+    if (millis() < measurementDelay + timer)
     {
         timer = millis();
         return;
