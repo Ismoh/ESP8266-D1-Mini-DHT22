@@ -11,6 +11,7 @@
 // #define ESP8266
 #define DHT_PIN D5 // GPIO14 | D5 | IO,SCK
 #define DEBUG_OUTPUT Serial
+#define MEASUREMENT_DELAY 60000 // in milliseconds
 
 Am2302 am2302;
 CustomWebServer customWebServer;
@@ -60,7 +61,7 @@ void setup(void)
 void loop(void)
 {
     customWifiManager.loop();
-    am2302.loop(deviceName, 0);
+    am2302.loop(deviceName, MEASUREMENT_DELAY);
     MDNS.update();
     customWebServer.loop();
 }

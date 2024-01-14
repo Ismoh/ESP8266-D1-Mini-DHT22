@@ -8,6 +8,7 @@
 DHTesp dhtEsp;
 WiFiClient client;
 HARestAPI ha(client);
+long timer = 0;
 
 void Am2302::setup(uint8_t pin)
 {
@@ -26,6 +27,13 @@ void Am2302::setup(uint8_t pin)
 
 void Am2302::loop(String deviceName, unsigned measurementDelay)
 {
+    // Wait async until measurement duration is reached
+    if (millis() >= measurementDelay + timer)
+    {
+        timer = millis();
+        return;
+    }
+
     delay(dhtEsp.getMinimumSamplingPeriod());
 
     float h = dhtEsp.getHumidity();
@@ -47,8 +55,6 @@ void Am2302::loop(String deviceName, unsigned measurementDelay)
         }
         sendToHA(deviceName, h, t);
     }
-
-    delay(measurementDelay);
 }
 
 void Am2302::print(float h, float t) const
